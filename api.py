@@ -14,5 +14,5 @@ def hello_world():
     }
 
 @router.get("/metar/{scenery}")
-def get_mean_metar(scenery: Scenery) -> Optional[Dict]
-    return mean_metar(scenery = scenery)
+def get_mean_metar(scenery: Scenery) -> Optional[Dict]:
+    return mean_metar(scenery = scenery, icaos = None)
