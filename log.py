@@ -1,12 +1,14 @@
 import logging
-import coloredlogs
-
 from enum import StrEnum, auto
+
+import coloredlogs
 
 log = logging.getLogger(__name__)
 
+
 class LogLevel(StrEnum):
     """Stupid shit that should be in the standard lib"""
+
     NOTSET = auto()
     DEBUG = auto()
     INFO = auto()
@@ -16,4 +18,4 @@ class LogLevel(StrEnum):
 
 
 def configure_logging(level: LogLevel) -> None:
-    coloredlogs.install(level = level.upper())
+    coloredlogs.install(level=level.upper())
