@@ -6,14 +6,20 @@ from typing import Optional
 
 # third party libs
 import click
+from fastapi import FastAPI
 
 # my own
 from dcs import Mission
 from log import LogLevel, configure_logging
 from scenery import Icao, IcaoList, Scenery
 from weather import mean_metar
+from api import router as api_router
+
 
 log = logging.getLogger(__name__)
+
+app = FastAPI()
+app.include_router(api_router)
 
 
 def unfold_icaos(icaos: Optional[Icao]) -> Optional[IcaoList]:
@@ -45,6 +51,17 @@ def update(miz, icao) -> None:
 @click.option("--icao", nargs=1, default=None, help="Comma separated list of ICAOs")
 def show(scenery: Optional[Scenery], icao: Optional[Icao]) -> None:
     pprint.pprint(mean_metar(scenery=scenery, icaos=unfold_icaos(icao)))
+
+@main.command(help="Starts the web-service")
+@click.option("--port", nargs=1, type=int, default=8080)
+def webservice(port):
+    import uvicorn
+    uvicorn.run(
+        "piovesullasiria:app",
+        host="0.0.0.0",
+        port=port
+    )
+
 
 
 if __name__ == "__main__":
