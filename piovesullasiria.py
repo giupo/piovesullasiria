@@ -34,18 +34,18 @@ def main(level):
     configure_logging(level)
 
 
-@main.command()
-@click.option("--miz", prompt="Path to MIZ ?")
-@click.option("--icao", nargs=1, default=None)
+@main.command(help="Update METAR on mission file")
+@click.option("--miz", prompt="Path to MIZ ?", help="path to MIZ")
+@click.option("--icao", nargs=1, default=None, help="comma separeted list of ICAOs")
 def update(miz, icao) -> None:
     mission = Mission(miz)
     data = mean_metar(mission.theatre, icaos=unfold_icaos(icao))
     log.info(data)
 
 
-@main.command()
-@click.option("--scenery", default=None)
-@click.option("--icao", nargs=1, default=None)
+@main.command(help="Shows METAR")
+@click.option("--scenery", default=None, help="Name of the Scenery", type=Scenery)
+@click.option("--icao", nargs=1, default=None, help="Comma separated list of ICAOs")
 def show(scenery: Scenery | None, icao: List[str] | None) -> None:
     import pprint
 

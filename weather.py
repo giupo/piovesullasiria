@@ -118,13 +118,16 @@ def average_metars(metars: List[Metar]) -> Dict:
     return result
 
 
-def mean_metar(scenery: Scenery | None = None, icaos=List[str] | None) -> Dict:
+def mean_metar(scenery: Scenery | None = None, icaos=List[str] | None) -> Dict|None:
     """
     Download and evaluate an average of METARs starting from a Scenery
     (for which are predefined a list of ICAOs or an explicit list of
     ICAOs.
     """
 
+    if icaos is None and scenery is None:
+        return None
+    
     if icaos is None:
         icaos = icao_by_scenery[scenery]
 
