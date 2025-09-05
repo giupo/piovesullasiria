@@ -1,6 +1,13 @@
 # Changelog
 
 
+## v0.3.1 (2025-09-05)
+
+### Changes
+
+* Updates requirements.txt. [MasterOfPuppets]
+
+
 ## v0.2.0 (2025-09-05)
 
 ### Changes
