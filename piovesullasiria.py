@@ -53,7 +53,7 @@ def show(scenery: Optional[Scenery], icao: Optional[Icao]) -> None:
     pprint.pprint(mean_metar(scenery=scenery, icaos=unfold_icaos(icao)))
 
 @main.command(help="Starts the web-service")
-@click.option("--port", nargs=1, type=int, default=8080)
+@click.option("--port", nargs=1, type=int, default=10000)
 def webservice(port):
     import uvicorn
     uvicorn.run(
@@ -61,7 +61,6 @@ def webservice(port):
         host="0.0.0.0",
         port=port
     )
-
 
 
 if __name__ == "__main__":
