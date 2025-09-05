@@ -1,6 +1,13 @@
 # Changelog
 
 
+## v0.2.0 (2025-09-05)
+
+### Changes
+
+* Adds save capabilities. [MasterOfPuppets]
+
+
 ## v0.1.5 (2025-09-05)
 
 ### Changes
