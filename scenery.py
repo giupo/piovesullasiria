@@ -4,6 +4,7 @@ from typing import List
 Icao = str
 IcaoList = List[Icao]
 
+
 class Scenery(StrEnum):
     Caucasus = "Caucasus"
     Syria = "Syria"

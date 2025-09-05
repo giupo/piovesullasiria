@@ -11,11 +11,12 @@ import requests
 from metar.Metar import Metar
 
 # my own
-from scenery import Scenery, icao_by_scenery, IcaoList
+from scenery import IcaoList, Scenery, icao_by_scenery
 
 log = logging.getLogger(__name__)
 
 MetarList = List[Metar]
+
 
 def download_metar(icao: str) -> Optional[Metar]:
     """This needs realy to be documented? REALLY!?"""
@@ -130,13 +131,13 @@ def mean_metar(scenery: Optional[Scenery], icaos: Optional[IcaoList]) -> Optiona
 
     if icaos is None and scenery is None:
         return None
-    
+
     list_icaos = icao_by_scenery[scenery] if not icaos else icaos
-    
-    metars : MetarList = []
+
+    metars: MetarList = []
     for icao in list_icaos:
         metar: Optional[Metar] = download_metar(icao)
         if metar:
             metars.append(metar)
-        
+
     return average_metars(metars)

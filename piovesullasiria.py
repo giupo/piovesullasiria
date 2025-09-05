@@ -10,9 +10,8 @@ import click
 # my own
 from dcs import Mission
 from log import LogLevel, configure_logging
-from scenery import Scenery, Icao, IcaoList
+from scenery import Icao, IcaoList, Scenery
 from weather import mean_metar
-
 
 log = logging.getLogger(__name__)
 
