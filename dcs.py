@@ -1,15 +1,17 @@
 import logging
-import tempfile
+# import tempfile
 import zipfile
 from enum import StrEnum, auto
 from pathlib import Path
-from typing import Dict, Tuple
+from typing import Dict, Tuple, Optional
 
 import luadata
 
 log = logging.getLogger(__name__)
 from scenery import Scenery
 
+DcsPath = str | Path
+MissionData = Dict
 
 class DCSMizFileName(StrEnum):
     """The goddamned filenames in .miz files"""
@@ -20,7 +22,7 @@ class DCSMizFileName(StrEnum):
     WAREHOUSES = auto()
 
 
-def load_miz(path: str | Path) -> Tuple[Dict, Scenery]:
+def load_miz(path: DcsPath) -> Tuple[Dict, Scenery]:
     with zipfile.ZipFile(path, "r") as miz:
         mission_contents = miz.read(DCSMizFileName.MISSION).decode("utf-8")
         mission_data = luadata.unserialize(mission_contents)
@@ -32,16 +34,20 @@ def load_miz(path: str | Path) -> Tuple[Dict, Scenery]:
         )
 
 
-def update_miz(path: str | Path, mission_data: Dict = None) -> None:
+def update_miz(path: DcsPath, mission_data: MissionData) -> None:
+    log.debug("path: %s", path)
+    if "x" in mission_data:
+        log.info("Delete me")
+        
     pass
 
 
 class Mission:
-    def __init__(self, path: str | Path):
+    def __init__(self, path: DcsPath):
         self.path = path
         self.mission_data, self.theatre = load_miz(self.path)
 
-    def save(self, path=None) -> None:
+    def save(self, path: Optional[DcsPath] = None) -> None:
         path = self.path if path is None else path
         update_miz(path, self.mission_data)
         self.path = path

@@ -4,19 +4,20 @@ to maniplate it.
 """
 
 import logging
-from typing import Dict, List
+from typing import Dict, List, Optional
 
 # third party libraries
 import requests
 from metar.Metar import Metar
 
 # my own
-from scenery import Scenery, icao_by_scenery
+from scenery import Scenery, icao_by_scenery, IcaoList
 
 log = logging.getLogger(__name__)
 
+MetarList = List[Metar]
 
-def download_metar(icao: str) -> Metar | None:
+def download_metar(icao: str) -> Optional[Metar]:
     """This needs realy to be documented? REALLY!?"""
     try:
         url = f"https://tgftp.nws.noaa.gov/data/observations/metar/stations/{icao}.TXT"
@@ -32,7 +33,7 @@ def download_metar(icao: str) -> Metar | None:
         return None
 
 
-def average_metars(metars: List[Metar]) -> Dict:
+def average_metars(metars: MetarList) -> Dict:
     """
     Compute the "mean" metar from a list of METARs, for whatever
     meaning this could have...
@@ -51,6 +52,8 @@ def average_metars(metars: List[Metar]) -> Dict:
         # vento
         if m.wind_speed and m.wind_dir:
             speed = m.wind_speed.value("KT")
+            if not speed:
+                speed = 0
             dir_rad = math.radians(m.wind_dir.value())
             u = -speed * math.sin(dir_rad)
             v = -speed * math.cos(dir_rad)
@@ -101,7 +104,7 @@ def average_metars(metars: List[Metar]) -> Dict:
             # raggruppo per tipo (FEW, SCT, BKN, OVC)
             grouped = {}
 
-            for cover, height, cloud_type in flat:
+            for cover, height, _ in flat:
                 if cover not in grouped:
                     grouped[cover] = []
                 if height:
@@ -118,7 +121,7 @@ def average_metars(metars: List[Metar]) -> Dict:
     return result
 
 
-def mean_metar(scenery: Scenery | None = None, icaos=List[str] | None) -> Dict|None:
+def mean_metar(scenery: Optional[Scenery], icaos: Optional[IcaoList]) -> Optional[Dict]:
     """
     Download and evaluate an average of METARs starting from a Scenery
     (for which are predefined a list of ICAOs or an explicit list of
@@ -128,8 +131,12 @@ def mean_metar(scenery: Scenery | None = None, icaos=List[str] | None) -> Dict|N
     if icaos is None and scenery is None:
         return None
     
-    if icaos is None:
-        icaos = icao_by_scenery[scenery]
-
-    metars: List[Metar | None] = [download_metar(icao) for icao in icaos]
+    list_icaos = icao_by_scenery[scenery] if not icaos else icaos
+    
+    metars : MetarList = []
+    for icao in list_icaos:
+        metar: Optional[Metar] = download_metar(icao)
+        if metar:
+            metars.append(metar)
+        
     return average_metars(metars)
