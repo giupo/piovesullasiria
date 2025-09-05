@@ -400,6 +400,20 @@ files = [
 traitlets = "*"
 
 [[package]]
+name = "mustache"
+version = "0.1.4"
+description = "Mustache templating in Python"
+optional = false
+python-versions = "*"
+groups = ["dev"]
+files = [
+    {file = "mustache-0.1.4.tar.gz", hash = "sha256:89b8cfd19be522d86b75469e5a146ee57ea4d749ea6872df685f6cb21771ff50"},
+]
+
+[package.extras]
+test = ["simplejson"]
+
+[[package]]
 name = "mypy-extensions"
 version = "1.1.0"
 description = "Type system extensions for programs checked with the mypy type checker."
@@ -771,4 +785,4 @@ files = [
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.9, <=3.12"
-content-hash = "523b2d0e02f3cfd26ec9e027802897960d00e6efe7a084a2c98dfb39f2eaa1a8"
+content-hash = "2bb740a32727e9b500142b10462646537c6e5bbf1c9c8d462e7cb788cd8dba92"
