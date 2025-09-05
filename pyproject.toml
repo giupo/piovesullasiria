@@ -1,6 +1,6 @@
 [project]
 name = "piovesullasiria"
-version = "0.1.5"
+version = "0.1.6"
 description = "Tool to download weather and save it on DCS miz"
 authors = [
     {name = "None"}
