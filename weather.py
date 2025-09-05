@@ -21,7 +21,7 @@ def download_metar(icao: str) -> Optional[Metar]:
     """This needs realy to be documented? REALLY!?"""
     try:
         url = f"https://tgftp.nws.noaa.gov/data/observations/metar/stations/{icao}.TXT"
-        log.debug("Downloading metar for %s from $s", icao, url)
+        log.debug("Downloading metar for %s from %s", icao, url)
         response = requests.get(url)
         raw_metar = response.text.split("\n")[1]
         metar = Metar(raw_metar)
